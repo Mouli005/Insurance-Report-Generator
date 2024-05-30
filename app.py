@@ -612,7 +612,7 @@ def set_bg_image(img_file):
 def main():
     st.title("Insurance Report Generator")
 
-    set_bg_image("D:/old D/Raju Sir Insurance Project/bg.jpg")
+    set_bg_image("bg.jpg")
     uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
     if uploaded_file is not None:
