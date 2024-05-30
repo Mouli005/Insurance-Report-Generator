@@ -9,27 +9,23 @@ def cashless_reimbursement_table(data_df):
     # Group by Claim Type and calculate sum of Claimed Amount
     claim_amt_summary = cashless_df.groupby("Claim_Type")["Claimed_Amount"].sum().reset_index()
 
-    # Calculate total claimed amount
+   
     total_claimed_amount = claim_amt_summary["Claimed_Amount"].sum()
 
-    # Calculate percentage of total amount
+    
     claim_amt_summary["As a % total Amt."] = (claim_amt_summary["Claimed_Amount"] / total_claimed_amount) * 100
 
-    # Count claims by Claim Type
+    
     claim_count_summary = cashless_df.groupby("Claim_Type").size().reset_index(name="No. of Claims (Settled & Underprocess)")
 
     # Calculate total number of claims
     total_claims = claim_count_summary["No. of Claims (Settled & Underprocess)"].sum()
 
-    claim_count_summary["As a % of total No."] = (claim_count_summary["No. of Claims (Settled & Underprocess)"] / total_claims) * 100
-
-    
+    claim_count_summary["As a % of total No."] = (claim_count_summary["No. of Claims (Settled & Underprocess)"] / total_claims) * 100    
     claim_count_summary["Avg Claim Size"] = claim_amt_summary["Claimed_Amount"] / claim_count_summary["No. of Claims (Settled & Underprocess)"]
-
-    
     final_summary = pd.merge(claim_amt_summary, claim_count_summary, on="Claim_Type")
 
-    # Add a row for total claims
+  
     total_row = pd.DataFrame({
         "Claim_Type": ["Total Claims"],
         "Claimed_Amount": [total_claimed_amount],
@@ -41,10 +37,10 @@ def cashless_reimbursement_table(data_df):
 
     final_summary = pd.concat([final_summary, total_row], ignore_index=True)
 
-    # Rename Claim_Type to Claim Mode for display
+    
     final_summary = final_summary.rename(columns={"Claim_Type": "Claim Mode"})
 
-    # Display the table
+    
     st.table(final_summary.style.format({"Claimed_Amount": "{:,.0f}", 
                                          "As a % total Amt.": "{:.0f}%",
                                          "As a % of total No.": "{:.0f}%",# 
