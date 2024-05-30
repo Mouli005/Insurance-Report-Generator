@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import base64
 
 def cashless_reimbursement_table(data_df):
     """Calculates and displays the Cashless vs Reimbursement table."""
@@ -588,6 +589,22 @@ def plot_hospital_wise_charts(hospital_data):
     
     st.pyplot(fig)
     
+def set_bg_image(img_file):
+        
+        with open(img_file, "rb") as f:
+            data = f.read()
+        encoded_data = base64.b64encode(data).decode()
+
+        page_bg_img = f'''
+      <style>
+        .stApp {{
+          background-image: url("data:image/png;base64,{encoded_data}");
+          background-size: cover;
+        }}
+      </style>
+      '''
+        st.markdown(page_bg_img, unsafe_allow_html=True)
+
 
 
 
@@ -595,7 +612,7 @@ def plot_hospital_wise_charts(hospital_data):
 def main():
     st.title("Insurance Report Generator")
 
-    
+    set_bg_image("D:/old D/Raju Sir Insurance Project/bg.jpg")
     uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
     if uploaded_file is not None:
